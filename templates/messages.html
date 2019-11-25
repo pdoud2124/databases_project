@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>Messages</title>
+	</head>
+	<body>
+		<h1>Welcome to the messages page!</h1>
+		{% for item in data %}
+		{% if item[3]|string()== usern|string() %}
+		<tr>
+			<td><i>{{item[1]}}</i></td>
+			<span style="color:blue;"><b><td>{{item[3]}}:</td></b></span>
+			<td>{{item[2]}}</td>
+			<br>
+			<br>
+		</tr>
+		{% else %}
+		<tr>
+			<td><i>{{item[1]}}</i></td>
+			<span style="color:red;"><b><td>{{item[3]}}:</td></b></span>
+			<td>{{item[2]}}</td>
+			<br>
+			<br>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	<h1>Write an entry</h1>
+    {% if step=="compose_entry" %}  
+        <form action="{{ url_for('messages') }}" method="post">
+        To: <input type="text" size="30" name="receiver"><br>
+        Message: <textarea name="content" rows="5" cols="40"></textarea><br>
+        <input type="hidden" name="step" value="add_entry">
+        <input type="submit">
+        </form>
+    {% elif step == "add_entry" %}
+        Your post has been submitted.
+    {% endif %}
+	</body>
+</html>
