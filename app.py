@@ -79,7 +79,19 @@ def auctions():
             return render_template("auctions.html", item=itemid, auction=row)
     else:
         return render_template("auctions.html")
-
+    
+@app.route('/post-item', methods=['get', 'post'])
+def post_item():
+    if 'item' not in request.form:
+        return render_template("post-item.html", item="notposted")
+    else:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("insert into items(itemName, description, startPrice, ownedBy) values (%s, %s, %s, %s)",
+                   [request.form["itemName"], request.form["itemdesc"], request.form["startingprice"], request.args.get('user')])
+        db.commit()
+        return render_template("post-item.html", item ="posted")
+    
 
 @app.route('/create-account', methods=['get', 'post'])
 def create_account():
