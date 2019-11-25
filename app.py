@@ -120,30 +120,33 @@ def user_home():
 
 @app.route('/messages',methods= ['get', 'post'])
 def messages():
-  db = get_db()
-  cursor = db.cursor()
-  cursorForID = db.cursor()
-  idSetQuery= "SELECT setval('message_messageId_seq', (SELECT max(message.messageId) FROM message)); "
-  cursorForID.execute(idSetQuery)
-  message_query = 'SELECT * FROM message WHERE senderID='+ "'" + request.args.get('user')+ "'" + ' OR receiverID='+"'" +request.args.get('user')+"'"+" ORDER BY messTime"
-  cursor.execute(message_query)
-  data = cursor.fetchall()
+    db = get_db()
+    cursor = db.cursor()
+    cursor2 = db.cursor()
+    cursorForID = db.cursor()
+    idSetQuery= "SELECT setval('message_messageId_seq', (SELECT max(message.messageId) FROM message)); "
+    cursorForID.execute(idSetQuery)
+    message_query = 'SELECT * FROM message WHERE senderID='+ "'" + request.args.get('user')+ "'" + ' OR receiverID='+ "'" + request.args.get('user')+ "'" + " ORDER BY messTime"
 
-  ############## Section for Writing entries ##################
-  if "step" not in request.form:     
+    ############## Section for Writing entries ##################
+
+    if "step" not in request.form:
+        cursor.execute(message_query)
+        data = cursor.fetchall()
         return render_template('messages.html', data=data, usern=request.args.get('user'), step="compose_entry")
-    
+
     # Step 2, add blog post to database.
-  elif request.form["step"] == "add_entry":
-        db = get_db()
-        cursor = db.cursor()
-        cursor2 = db.cursor()
+    elif request.form["step"] == "add_entry":
         sql2 = "insert into message(messTime, messText, senderID, receiverID) values ("\
-        +"now(),'"+request.form["content"]+"','" \
-                    + request.args.get('user') + "','"+request.form["receiver"]+"'"+")"
+            +"now(),'"+request.form["content"]+"','" \
+            + request.args.get('user') + "','" + request.form["receiver"] + "'" + ")"
         debug(sql2)
+        cursor.execute(message_query)
+        data = cursor.fetchall()
         cursor2.execute(sql2)
         db.commit()
+        cursor.execute(message_query)
+        data = cursor.fetchall()
         return render_template('messages.html', data=data, usern=request.args.get('user'), step="add_entry")
 
 
