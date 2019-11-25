@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Post Item</title>
+  </head>
+<body>
+  <h1>Post Item</h1>
+  {% if item == "notposted" %}
+    <form action="{{ url_for('post_item') }}?user={{request.args.get('user')}}" method="post">
+    Item Name: <input type="text" name="itemName"> <br> <br>
+    Item Description: <input type="text" name="itemdesc"> <br> <br>
+    Starting Auction Price: <input type="text" name="startingprice"> <br> <br>
+    <input type="hidden" name="item" value="posted">
+    <input type="Submit" value="submit">
+    </form>
+  {% else %}
+    <h3>Item Posted! </h3>
+  {% endif %}
+</body>
+</html>
