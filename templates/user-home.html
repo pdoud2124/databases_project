@@ -6,13 +6,19 @@
   <h1>Home Page for {{request.args.get('name')}}</h1>
   <h2>{{request.args.get('user')}}</h2>
   <br><br>
-  <a href="./post-itemuser={{request.args.get('user')}}">Post Item</a>
+  <a href="./post-item?user={{request.args.get('user')}}">Post Item</a>
   <br>
   <a href="./view-item?user={{request.args.get('user')}}">View All Items</a>
   <br>
   <a href="./search-item?user={{request.args.get('user')}}">Search for Items</a>
   <br>
   <a href="./messages?user={{request.args.get('user')}}">View Messages</a>
+  <br>
+  <a href="./view-friends?user={{request.args.get('user')}}">View All Friends</a>
+  <br>
+  <a href="./add-friend?user={{request.args.get('user')}}">Add Friend</a>
+  <br>
+  <a href="./delete-friend?user={{request.args.get('user')}}">Delete Friend</a>
   <br>
 </body>
 </html>
