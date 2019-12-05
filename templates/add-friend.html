@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Add Friend</title>
+  </head>
+<body>
+  <h1>Add Friend</h1>
+  {% if friendrequest == "notadded" %}
+    <form action="{{ url_for('add_friend') }}?user={{request.args.get('user')}}" method="post">
+    Friends Email to Add: <input type="text" name="friend2"> <br> <br>
+    <input type="hidden" name="friendrequest" value="added">
+    <input type="Submit" value="submit">
+    </form>
+  {% else %}
+    <h3>Friend added! </h3>
+  {% endif %}
+</body>
+</html>
