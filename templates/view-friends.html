@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>View Friends</title>
+    </head>
+    <body>
+        <h1> View Friends </h1>
+        {% for item in data %}
+        <tr>
+            <td>{{item[0]}}</td> <br>
+        </tr>
+        {% endfor %}
+        <h3> Go back to <a href="./user-home?user={{request.args.get('user')}}&name={{request.args.get('name')}}"> User-Home </a> </h3>
+    </body>
+</html>
