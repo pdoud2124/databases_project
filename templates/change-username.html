@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Change username</title>
+  </head>
+<body>
+  <h1>Change username</h1>
+  {% if username == "notupdated" %}
+    <form action="{{ url_for('change_username') }}?user={{request.args.get('user')}}" method="post">
+    New Username: <input type="text" name="username"><br>
+    <input type="Submit" value="submit">
+    </form>
+  {% else %}
+    <h3>Username updated! Returning to homepage...</h3>
+    <meta http-equiv="Refresh" content="1; url=./user-home" />
+  {% endif %}
+</body>
+</html>
