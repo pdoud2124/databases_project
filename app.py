@@ -139,6 +139,18 @@ def create_account():
         db.commit()
         return render_template("create-account.html", account="accountmade")
 
+@app.route('/change-username', methods=['get', 'post'])
+def change_username():
+    if 'username' not in request.form:
+        return render_template("change-username.html", username="notupdated")
+    else:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("update users set username=%s where email=%s",
+                   [request.form["username"], request.args.get('user')])
+        db.commit()
+        return render_template("change-username.html", username="updated")
+
 
 @app.route('/sign-in', methods=['get', 'post'])
 def sign_in():
