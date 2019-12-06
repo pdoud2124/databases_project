@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Delete Friend</title>
+  </head>
+<body>
+  <h1>Delete Friend</h1>
+  {% if frienddelete == "notdeleted" %}
+    <form action="{{ url_for('delete_friend') }}?user={{request.args.get('user')}}&name={{request.args.get('name')}}" method="post">
+    Friends Email to Delete: <input type="text" name="friend"> <br> <br>
+    <input type="hidden" name="frienddelete" value="deleted">
+    <input type="Submit" value="submit">
+    </form>
+  {% else %}
+    <h3>Friend deleted! </h3> <br>
+    <h4> Go back to <a href="./user-home?user={{request.args.get('user')}}&name={{request.args.get('name')}}"> User-Home </a> </h4>
+  {% endif %}
+</body>
+</html>
