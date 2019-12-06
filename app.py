@@ -80,6 +80,40 @@ def auctions():
     else:
         return render_template("auctions.html")
     
+@app.route("/view-friends", methods=['get', 'post'])
+def friends():
+    db=get_db()
+    cursor = db.cursor()
+    sql_query = "SELECT friend1 FROM friends WHERE friend2="+"'" + request.args.get('user')+ "'" + "UNION SELECT friend2 FROM friends WHERE friend1="+"'" + request.args.get('user')+ "'"
+    cursor.execute(sql_query)
+    data = cursor.fetchall()
+    return render_template("view-friends.html", data = data)
+
+@app.route('/add-friend', methods=['get', 'post'])
+def add_friend():
+    if 'friendrequest' not in request.form:
+        return render_template("add-friend.html", friendrequest="notadded")
+    else:
+        now = str(datetime.now())
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("insert into friends(friend1, friend2, dateAdded) values (%s, %s, %s)",
+                   [request.args.get('user'), request.form["friend2"], now])
+        db.commit()
+        return render_template("add-friend.html", friendrequest="added")
+
+@app.route('/delete-friend', methods=['get', 'post'])
+def delete_friend():
+    if 'frienddelete' not in request.form:
+        return render_template("delete-friend.html", frienddelete="notdeleted")
+    else:
+        now = str(datetime.now())
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("DELETE FROM friends WHERE (friend1="+"'"+request.args.get('user')+"'"+"AND friend2="+"'"+request.form["friend"]+"'"+") OR (friend1="+"'"+request.form["friend"]+"'"+" AND friend2="+"'"+request.args.get('user')+"'"+")")
+        db.commit()
+        return render_template("delete-friend.html", frienddelete="deleted")
+    
 @app.route('/post-item', methods=['get', 'post'])
 def post_item():
     if 'item' not in request.form:
